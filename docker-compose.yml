@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  meilisearch:
+    image: getmeili/meilisearch:v1.9
+    ports:
+      - "3002:7700"
+    environment:
+      MEILI_MASTER_KEY: 'master_key_super_key' # Replace with your master key
+    deploy:
+      replicas: 3 # Number of instances
+      resources:
+        limits:
+          cpus: '1'
+          memory: 100M
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - ./meili_data:/meili_data
+    networks:
+      - meili_network
+
+volumes:
+  meili_data:
+
+networks:
+  meili_network:
+    driver: overlay
